@@ -74,9 +74,9 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // API Configuration - Users should replace this URL
+        // API Configuration - Replace with your actual Apps Script URL
         const API_CONFIG = {
-            appsScriptUrl: 'YOUR_APPS_SCRIPT_URL_HERE' // User will replace this
+            appsScriptUrl: 'https://script.google.com/macros/s/AKfycby4JP2aEBLqzgJUdYMmivRxrHwTCeWvtK7dxFDt-xXxs5hPcaWP0SwbrTqyeTpvfVZIPA/exec' // Replace this with the URL from Step 1
         };
 
         // No sample data - connecting to real Google Sheets
@@ -280,7 +280,8 @@
         // Data fetching functions
         const fetchLeads = async () => {
             try {
-                if (API_CONFIG.appsScriptUrl === 'YOUR_APPS_SCRIPT_URL_HERE') {
+                if (API_CONFIG.appsScriptUrl.includes('PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') || 
+                    API_CONFIG.appsScriptUrl === 'YOUR_APPS_SCRIPT_URL_HERE') {
                     throw new Error('Please configure your Google Apps Script URL');
                 }
                 const response = await fetch(`${API_CONFIG.appsScriptUrl}?action=getLeads`);
@@ -294,7 +295,8 @@
 
         const fetchDeals = async () => {
             try {
-                if (API_CONFIG.appsScriptUrl === 'YOUR_APPS_SCRIPT_URL_HERE') {
+                if (API_CONFIG.appsScriptUrl.includes('PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') || 
+                    API_CONFIG.appsScriptUrl === 'YOUR_APPS_SCRIPT_URL_HERE') {
                     throw new Error('Please configure your Google Apps Script URL');
                 }
                 const response = await fetch(`${API_CONFIG.appsScriptUrl}?action=getDeals`);
@@ -1026,11 +1028,13 @@
                                         Developer: Jethro Bermejo
                                     </div>
                                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                        API_CONFIG.appsScriptUrl === 'YOUR_APPS_SCRIPT_URL_HERE' 
+                                        API_CONFIG.appsScriptUrl.includes('PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') || 
+                                        API_CONFIG.appsScriptUrl === 'YOUR_APPS_SCRIPT_URL_HERE'
                                             ? 'bg-red-100 text-red-800' 
                                             : 'bg-green-100 text-green-800'
                                     }`}>
-                                        {API_CONFIG.appsScriptUrl === 'YOUR_APPS_SCRIPT_URL_HERE' 
+                                        {API_CONFIG.appsScriptUrl.includes('PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') || 
+                                         API_CONFIG.appsScriptUrl === 'YOUR_APPS_SCRIPT_URL_HERE'
                                             ? 'Not Configured' 
                                             : 'Connected to Google Sheets'}
                                     </span>
@@ -1040,7 +1044,8 @@
                     </footer>
 
                     {/* Setup Instructions Modal */}
-                    {API_CONFIG.appsScriptUrl === 'YOUR_APPS_SCRIPT_URL_HERE' && (
+                    {(API_CONFIG.appsScriptUrl.includes('PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') || 
+                      API_CONFIG.appsScriptUrl === 'YOUR_APPS_SCRIPT_URL_HERE') && (
                         <div className="fixed bottom-4 right-4 max-w-sm">
                             <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-lg">
                                 <h4 className="font-semibold text-red-800 mb-2">⚠️ Configuration Required</h4>
