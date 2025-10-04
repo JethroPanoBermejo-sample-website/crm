@@ -4,11 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lucille's Premium Catering - CRM Dashboard</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        // Suppress Tailwind production warning for demo purposes
+        if (typeof window !== 'undefined') {
+            const originalWarn = console.warn;
+            console.warn = function(...args) {
+                if (args[0] && args[0].includes('tailwindcss.com should not be used in production')) {
+                    return;
+                }
+                originalWarn.apply(console, args);
+            };
+        }
+    </script>
+    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.23.0/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.js"></script>
     <style>
         .gradient-bg {
             background: linear-gradient(135deg, #f8fafc 0%, #faf5ff 50%, #fdf2f8 100%);
@@ -63,31 +76,81 @@
 
         // Icon components using Lucide
         const Icons = {
-            Calendar: () => React.createElement(lucide.Calendar, { size: 20 }),
-            Users: () => React.createElement(lucide.Users, { size: 20 }),
-            TrendingUp: () => React.createElement(lucide.TrendingUp, { size: 20 }),
-            DollarSign: () => React.createElement(lucide.DollarSign, { size: 20 }),
-            Bell: () => React.createElement(lucide.Bell, { size: 20 }),
-            Search: () => React.createElement(lucide.Search, { size: 20 }),
-            Filter: () => React.createElement(lucide.Filter, { size: 20 }),
-            Mail: () => React.createElement(lucide.Mail, { size: 16 }),
-            Phone: () => React.createElement(lucide.Phone, { size: 16 }),
-            Gift: () => React.createElement(lucide.Gift, { size: 20 }),
-            Heart: () => React.createElement(lucide.Heart, { size: 16 }),
-            Briefcase: () => React.createElement(lucide.Briefcase, { size: 16 }),
-            Award: () => React.createElement(lucide.Award, { size: 16 }),
-            Baby: () => React.createElement(lucide.Baby, { size: 16 }),
-            GraduationCap: () => React.createElement(lucide.GraduationCap, { size: 16 }),
-            Star: () => React.createElement(lucide.Star, { size: 16 }),
-            AlertCircle: () => React.createElement(lucide.AlertCircle, { size: 20 }),
-            CheckCircle: () => React.createElement(lucide.CheckCircle, { size: 16 }),
-            XCircle: () => React.createElement(lucide.XCircle, { size: 16 }),
-            Clock: () => React.createElement(lucide.Clock, { size: 16 }),
-            ChevronDown: () => React.createElement(lucide.ChevronDown, { size: 16 }),
-            Menu: () => React.createElement(lucide.Menu, { size: 24 }),
-            X: () => React.createElement(lucide.X, { size: 24 }),
-            RefreshCw: () => React.createElement(lucide.RefreshCw, { size: 20 }),
-            CalendarIcon: ({ size = 20 }) => React.createElement(lucide.Calendar, { size })
+            Calendar: ({ size = 20 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.calendar.toSvg({ size }) } 
+            }),
+            Users: ({ size = 20 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.users.toSvg({ size }) } 
+            }),
+            TrendingUp: ({ size = 20 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.trendingUp.toSvg({ size }) } 
+            }),
+            DollarSign: ({ size = 20 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.dollarSign.toSvg({ size }) } 
+            }),
+            Bell: ({ size = 20 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.bell.toSvg({ size }) } 
+            }),
+            Search: ({ size = 20 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.search.toSvg({ size }) } 
+            }),
+            Filter: ({ size = 20 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.filter.toSvg({ size }) } 
+            }),
+            Mail: ({ size = 16 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.mail.toSvg({ size }) } 
+            }),
+            Phone: ({ size = 16 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.phone.toSvg({ size }) } 
+            }),
+            Gift: ({ size = 20 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.gift.toSvg({ size }) } 
+            }),
+            Heart: ({ size = 16 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.heart.toSvg({ size }) } 
+            }),
+            Briefcase: ({ size = 16 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.briefcase.toSvg({ size }) } 
+            }),
+            Award: ({ size = 16 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.award.toSvg({ size }) } 
+            }),
+            Baby: ({ size = 16 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.baby.toSvg({ size }) } 
+            }),
+            GraduationCap: ({ size = 16 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.graduationCap.toSvg({ size }) } 
+            }),
+            Star: ({ size = 16 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.star.toSvg({ size }) } 
+            }),
+            AlertCircle: ({ size = 20 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.alertCircle.toSvg({ size }) } 
+            }),
+            CheckCircle: ({ size = 16 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.checkCircle.toSvg({ size }) } 
+            }),
+            XCircle: ({ size = 16 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.xCircle.toSvg({ size }) } 
+            }),
+            Clock: ({ size = 16 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.clock.toSvg({ size }) } 
+            }),
+            ChevronDown: ({ size = 16 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.chevronDown.toSvg({ size }) } 
+            }),
+            Menu: ({ size = 24 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.menu.toSvg({ size }) } 
+            }),
+            X: ({ size = 24 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.x.toSvg({ size }) } 
+            }),
+            RefreshCw: ({ size = 20 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.refreshCw.toSvg({ size }) } 
+            }),
+            CalendarIcon: ({ size = 20 }) => React.createElement('i', { 
+                dangerouslySetInnerHTML: { __html: lucide.icons.calendar.toSvg({ size }) } 
+            })
         };
 
         // Utility functions
@@ -929,7 +992,8 @@
             );
         };
 
-        ReactDOM.render(<App />, document.getElementById('root'));
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
