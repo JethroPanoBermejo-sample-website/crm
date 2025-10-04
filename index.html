@@ -756,8 +756,8 @@
                             <div className="space-y-4 sm:space-y-8 fade-in">
                                 {/* Stats Cards */}
                                 <div className="space-y-4 sm:space-y-6">
-                                    {/* First 4 cards in 2 columns on mobile, responsive on larger screens */}
-                                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 lg:gap-6">
+                                    {/* All 5 cards - 2x2+1 on mobile, single row on larger screens */}
+                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-2 sm:gap-4 lg:gap-6">
                                         <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-6 card-hover">
                                             <div className="flex items-center justify-between">
                                                 <div>
@@ -807,11 +807,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    {/* Commission card separately */}
-                                    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-5 gap-2 sm:gap-4 lg:gap-6">
-                                        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-6 card-hover lg:col-start-5">
+                                        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-6 card-hover col-span-2 md:col-span-1">
                                             <div className="flex items-center justify-between">
                                                 <div>
                                                     <p className="text-xs sm:text-sm font-medium text-gray-600">Your Commission</p>
