@@ -1,0 +1,217 @@
+{
+  "app": {
+    "name": "Lucille's Premium Catering",
+    "subtitle": "CRM Dashboard",
+    "logo": "L",
+    "developer": "Jethro Bermejo"
+  },
+  "api": {
+    "appsScriptUrl": "YOUR_APPS_SCRIPT_URL_HERE",
+    "sheetsId": "YOUR_SHEET_ID_HERE",
+    "leadsSheetName": "Lead Intake",
+    "dealsSheetName": "Deal Tracking"
+  },
+  "theme": {
+    "primaryColor": "#667eea",
+    "secondaryColor": "#764ba2",
+    "gradientDirection": "135deg",
+    "cardRadius": "1rem",
+    "shadowLevel": "lg"
+  },
+  "business": {
+    "commissionRate": 0.05,
+    "currency": "PHP",
+    "locale": "en-PH",
+    "timezone": "Asia/Manila"
+  },
+  "features": {
+    "autoRefresh": {
+      "enabled": false,
+      "intervalMinutes": 5
+    },
+    "darkMode": {
+      "enabled": false,
+      "default": false
+    },
+    "notifications": {
+      "enabled": true,
+      "position": "top-right"
+    },
+    "export": {
+      "enabled": true,
+      "formats": ["csv", "pdf"]
+    }
+  },
+  "eventTypes": [
+    {
+      "name": "Wedding",
+      "icon": "Heart",
+      "color": "#dc2626",
+      "background": "#fecaca"
+    },
+    {
+      "name": "Birthday Party",
+      "icon": "Gift",
+      "color": "#e53e3e",
+      "background": "#fed7d7"
+    },
+    {
+      "name": "Corporate Event",
+      "icon": "Briefcase",
+      "color": "#2563eb",
+      "background": "#dbeafe"
+    },
+    {
+      "name": "Anniversary",
+      "icon": "Star",
+      "color": "#d97706",
+      "background": "#fef3c7"
+    },
+    {
+      "name": "Baptism/Christening",
+      "icon": "Baby",
+      "color": "#6366f1",
+      "background": "#e0e7ff"
+    },
+    {
+      "name": "Graduation",
+      "icon": "GraduationCap",
+      "color": "#059669",
+      "background": "#d1fae5"
+    },
+    {
+      "name": "Others",
+      "icon": "Calendar",
+      "color": "#6b7280",
+      "background": "#f3f4f6"
+    }
+  ],
+  "statusTypes": {
+    "leads": [
+      {
+        "name": "Pending Follow-up",
+        "color": "bg-blue-100 text-blue-800 border-blue-200",
+        "icon": "Clock"
+      },
+      {
+        "name": "Closed",
+        "color": "bg-green-100 text-green-800 border-green-200",
+        "icon": "CheckCircle"
+      },
+      {
+        "name": "Lost",
+        "color": "bg-red-100 text-red-800 border-red-200",
+        "icon": "XCircle"
+      }
+    ],
+    "deals": [
+      {
+        "name": "Closed(Won)",
+        "color": "bg-green-100 text-green-800 border-green-200",
+        "icon": "CheckCircle"
+      },
+      {
+        "name": "Pending",
+        "color": "bg-yellow-100 text-yellow-800 border-yellow-200",
+        "icon": "Clock"
+      },
+      {
+        "name": "Lost",
+        "color": "bg-red-100 text-red-800 border-red-200",
+        "icon": "XCircle"
+      }
+    ]
+  },
+  "dashboard": {
+    "statsCards": [
+      {
+        "id": "totalLeads",
+        "title": "Total Leads",
+        "icon": "Users",
+        "color": "blue",
+        "order": 1
+      },
+      {
+        "id": "closedDeals",
+        "title": "Closed Deals",
+        "icon": "CheckCircle",
+        "color": "green",
+        "showConversion": true,
+        "order": 2
+      },
+      {
+        "id": "totalRevenue",
+        "title": "Total Revenue",
+        "icon": "DollarSign",
+        "color": "purple",
+        "format": "currency",
+        "order": 3
+      },
+      {
+        "id": "totalCommission",
+        "title": "Your Commission",
+        "icon": "TrendingUp",
+        "color": "pink",
+        "format": "currency",
+        "subtitle": "5% of closed deals",
+        "order": 4
+      }
+    ],
+    "quickStats": [
+      {
+        "id": "pipeline",
+        "title": "Deal Pipeline",
+        "type": "pipeline"
+      },
+      {
+        "id": "upcomingEvents",
+        "title": "Upcoming Events",
+        "type": "counter",
+        "subtitle": "Next 30 days"
+      },
+      {
+        "id": "birthdaysThisMonth",
+        "title": "This Month's Birthdays",
+        "type": "counter",
+        "subtitle": "Re-booking opportunities"
+      }
+    ],
+    "recentActivityLimit": 5
+  },
+  "filters": {
+    "searchPlaceholder": "Search by name, email, or reference number...",
+    "dealFilters": ["All Deals", "Closed(Won)", "Pending", "Lost"],
+    "monthNames": [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ]
+  },
+  "messages": {
+    "loading": "Loading data from Google Sheets...",
+    "noData": {
+      "leads": "No leads found",
+      "deals": "No deals found",
+      "birthdays": "No Birthdays This Month",
+      "events": "No Upcoming Events"
+    },
+    "errors": {
+      "connectionFailed": "Connection Error",
+      "fetchFailed": "Failed to fetch data",
+      "retryMessage": "Please try again or check your connection"
+    },
+    "success": {
+      "dataLoaded": "Data refreshed successfully",
+      "setupComplete": "Setup completed successfully"
+    }
+  },
+  "dateFormats": {
+    "display": "en-US",
+    "storage": "YYYY-MM-DD",
+    "timestamp": "MM/DD/YYYY HH:mm:ss"
+  },
+  "performance": {
+    "debounceMs": 300,
+    "cacheTimeout": 300000,
+    "maxRetries": 3
+  }
+}
