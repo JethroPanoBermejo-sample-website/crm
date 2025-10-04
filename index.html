@@ -556,44 +556,56 @@
                 }
             }) : [];
 
-            const upcomingEvents = Array.isArray(leads) && Array.isArray(deals) ? leads.filter(lead => {
-                if (!lead || !lead.eventDate || !lead.refNumber) return false;
-                
-                // Get latest deal status for this reference number
-                const latestDeal = deals.reduce((latest, deal) => {
-                    if (!deal || deal.refNumber !== lead.refNumber) return latest;
+            const upcomingEvents = Array.isArray(leads) && Array.isArray(deals) ? (() => {
+                // Get latest deals only (most recent status for each reference number)
+                const latestDeals = deals.reduce((acc, deal) => {
+                    if (!deal || !deal.refNumber) return acc;
                     
-                    if (!latest) return deal;
+                    const existing = acc[deal.refNumber];
+                    if (!existing) {
+                        acc[deal.refNumber] = deal;
+                    } else {
+                        // Compare timestamps to keep the most recent
+                        try {
+                            const existingTime = new Date(existing.timestamp || 0);
+                            const currentTime = new Date(deal.timestamp || 0);
+                            if (currentTime > existingTime) {
+                                acc[deal.refNumber] = deal;
+                            }
+                        } catch (e) {
+                            // If timestamp comparison fails, keep the first one
+                        }
+                    }
+                    return acc;
+                }, {});
+                
+                return leads.filter(lead => {
+                    if (!lead || !lead.eventDate || !lead.refNumber) return false;
+                    
+                    // Get the latest deal status for this reference number
+                    const latestDeal = latestDeals[lead.refNumber];
+                    
+                    // Check if the latest deal status is closed (won)
+                    const hasClosedDeal = latestDeal && latestDeal.status === 'Closed(Won)';
+                    
+                    if (!hasClosedDeal) return false; // Only include leads with closed deals
                     
                     try {
-                        const latestTime = new Date(latest.timestamp || 0);
-                        const currentTime = new Date(deal.timestamp || 0);
-                        return currentTime > latestTime ? deal : latest;
+                        const eventDate = new Date(lead.eventDate);
+                        const today = new Date();
+                        const thirtyDaysFromNow = new Date(today.getTime() + (30 * 24 * 60 * 60 * 1000));
+                        return eventDate >= today && eventDate <= thirtyDaysFromNow;
                     } catch (e) {
-                        return latest;
+                        return false;
                     }
-                }, null);
-                
-                // Check if the latest deal status is closed
-                const hasClosedDeal = latestDeal && latestDeal.status === 'Closed(Won)';
-                
-                if (!hasClosedDeal) return false; // Only include leads with closed deals
-                
-                try {
-                    const eventDate = new Date(lead.eventDate);
-                    const today = new Date();
-                    const thirtyDaysFromNow = new Date(today.getTime() + (30 * 24 * 60 * 60 * 1000));
-                    return eventDate >= today && eventDate <= thirtyDaysFromNow;
-                } catch (e) {
-                    return false;
-                }
-            }).sort((a, b) => {
-                try {
-                    return new Date(a.eventDate) - new Date(b.eventDate);
-                } catch (e) {
-                    return 0;
-                }
-            }) : [];
+                }).sort((a, b) => {
+                    try {
+                        return new Date(a.eventDate) - new Date(b.eventDate);
+                    } catch (e) {
+                        return 0;
+                    }
+                });
+            })() : [];
 
             const getDaysUntilEvent = (eventDate) => {
                 const today = new Date();
