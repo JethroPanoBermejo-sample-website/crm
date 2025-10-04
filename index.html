@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lucille's Premium Catering - CRM Dashboard</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>">
+    <link rel="icon" href="img/lucilles-logo.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         // Suppress development warnings for single-file deployment
@@ -33,22 +33,23 @@
     <script src="https://unpkg.com/@babel/standalone@7.23.0/babel.min.js"></script>
     <style>
         .gradient-bg {
-            background: linear-gradient(135deg, #f8fafc 0%, #faf5ff 50%, #fdf2f8 100%);
+            background: #03752d;
         }
         .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #15803d 0%, #ca8a04 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         .gradient-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #15803d 0%, #ca8a04 100%);
         }
         .gradient-button:hover {
-            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+            background: linear-gradient(135deg, #166534 0%, #a16207 100%);
         }
         .loading-spinner {
             animation: spin 1s linear infinite;
+            color: #d97706;
         }
         @keyframes spin {
             from { transform: rotate(0deg); }
@@ -641,7 +642,7 @@
                             <div className="loading-spinner mx-auto mb-4">
                                 <Icons.RefreshCw />
                             </div>
-                            <p className="text-gray-600">Loading data from Google Sheets...</p>
+                            <p className="text-yellow-600">Loading data from Google Sheets...</p>
                         </div>
                     </div>
                 );
@@ -673,8 +674,8 @@
                             <div className="flex justify-between items-center py-4">
                                 {/* Logo */}
                                 <div className="flex items-center space-x-4">
-                                    <div className="w-12 h-12 rounded-full gradient-button flex items-center justify-center text-white font-bold text-xl">
-                                        L
+                                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg">
+                                        <img src="img/lucilles-logo.png" alt="Lucille's Logo" className="w-10 h-10 object-contain" />
                                     </div>
                                     <div>
                                         <h1 className="text-2xl font-bold gradient-text">Lucille's Premium Catering</h1>
@@ -749,78 +750,84 @@
                     </header>
 
                     {/* Main Content */}
-                    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <main className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
                         {/* Dashboard Tab */}
                         {activeTab === 'dashboard' && (
-                            <div className="space-y-8 fade-in">
+                            <div className="space-y-4 sm:space-y-8 fade-in">
                                 {/* Stats Cards */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-                                    <div className="bg-white rounded-2xl shadow-lg p-6 card-hover">
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <p className="text-sm font-medium text-gray-600">Total Leads</p>
-                                                <p className="text-3xl font-bold text-blue-600">{stats.totalLeads}</p>
+                                <div className="space-y-4 sm:space-y-6">
+                                    {/* First 4 cards in 2 columns on mobile, responsive on larger screens */}
+                                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 lg:gap-6">
+                                        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-6 card-hover">
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <p className="text-xs sm:text-sm font-medium text-gray-600">Total Leads</p>
+                                                    <p className="text-xl sm:text-3xl font-bold text-blue-600">{stats.totalLeads}</p>
+                                                </div>
+                                                <div className="p-2 sm:p-3 bg-blue-100 rounded-lg sm:rounded-xl">
+                                                    <Icons.Users />
+                                                </div>
                                             </div>
-                                            <div className="p-3 bg-blue-100 rounded-xl">
-                                                <Icons.Users />
+                                        </div>
+
+                                        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-6 card-hover">
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <p className="text-xs sm:text-sm font-medium text-gray-600">Pending Leads</p>
+                                                    <p className="text-xl sm:text-3xl font-bold text-orange-600">{stats.untrackedLeads}</p>
+                                                    <p className="text-xs text-gray-500">Not tracked yet</p>
+                                                </div>
+                                                <div className="p-2 sm:p-3 bg-orange-100 rounded-lg sm:rounded-xl">
+                                                    <Icons.AlertCircle />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-6 card-hover">
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <p className="text-xs sm:text-sm font-medium text-gray-600">Closed Deals</p>
+                                                    <p className="text-xl sm:text-3xl font-bold text-green-600">{stats.closedDeals}</p>
+                                                    <p className="text-xs text-gray-500">{stats.conversionRate}% conversion</p>
+                                                </div>
+                                                <div className="p-2 sm:p-3 bg-green-100 rounded-lg sm:rounded-xl">
+                                                    <Icons.CheckCircle />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-6 card-hover">
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <p className="text-xs sm:text-sm font-medium text-gray-600">Total Revenue</p>
+                                                    <p className="text-xl sm:text-3xl font-bold text-purple-600">{formatCurrency(stats.totalRevenue)}</p>
+                                                </div>
+                                                <div className="p-2 sm:p-3 bg-purple-100 rounded-lg sm:rounded-xl">
+                                                    <Icons.DollarSign />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="bg-white rounded-2xl shadow-lg p-6 card-hover">
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <p className="text-sm font-medium text-gray-600">Pending Leads</p>
-                                                <p className="text-3xl font-bold text-orange-600">{stats.untrackedLeads}</p>
-                                                <p className="text-xs text-gray-500">Not tracked yet</p>
-                                            </div>
-                                            <div className="p-3 bg-orange-100 rounded-xl">
-                                                <Icons.AlertCircle />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="bg-white rounded-2xl shadow-lg p-6 card-hover">
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <p className="text-sm font-medium text-gray-600">Closed Deals</p>
-                                                <p className="text-3xl font-bold text-green-600">{stats.closedDeals}</p>
-                                                <p className="text-xs text-gray-500">{stats.conversionRate}% conversion</p>
-                                            </div>
-                                            <div className="p-3 bg-green-100 rounded-xl">
-                                                <Icons.CheckCircle />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="bg-white rounded-2xl shadow-lg p-6 card-hover">
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-                                                <p className="text-3xl font-bold text-purple-600">{formatCurrency(stats.totalRevenue)}</p>
-                                            </div>
-                                            <div className="p-3 bg-purple-100 rounded-xl">
-                                                <Icons.DollarSign />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="bg-white rounded-2xl shadow-lg p-6 card-hover">
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <p className="text-sm font-medium text-gray-600">Your Commission</p>
-                                                <p className="text-3xl font-bold text-pink-600">{formatCurrency(stats.totalCommission)}</p>
-                                                <p className="text-xs text-gray-500">5% of closed deals</p>
-                                            </div>
-                                            <div className="p-3 bg-pink-100 rounded-xl">
-                                                <Icons.TrendingUp />
+                                    {/* Commission card separately */}
+                                    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-5 gap-2 sm:gap-4 lg:gap-6">
+                                        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-6 card-hover lg:col-start-5">
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <p className="text-xs sm:text-sm font-medium text-gray-600">Your Commission</p>
+                                                    <p className="text-xl sm:text-3xl font-bold text-pink-600">{formatCurrency(stats.totalCommission)}</p>
+                                                    <p className="text-xs text-gray-500">5% of closed deals</p>
+                                                </div>
+                                                <div className="p-2 sm:p-3 bg-pink-100 rounded-lg sm:rounded-xl">
+                                                    <Icons.TrendingUp />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Quick Stats */}
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
                                     <div className="bg-white rounded-2xl shadow-lg p-6 card-hover">
                                         <h3 className="text-lg font-semibold text-gray-800 mb-4">Deal Pipeline</h3>
                                         <div className="space-y-3">
@@ -1007,7 +1014,7 @@
                                             placeholder="Search by name, email, or reference number..."
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
-                                            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+                                            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
                                         />
                                     </div>
                                     {searchTerm && (
@@ -1049,7 +1056,7 @@
                                                 <div className="space-y-3">
                                                     <div className="flex items-center space-x-2 text-sm text-gray-600">
                                                         <Icons.Mail />
-                                                        <a href={`mailto:${lead.email}`} className="hover:text-purple-600 transition-colors">
+                                                        <a href={`mailto:${lead.email}`} className="hover:text-green-600 transition-colors">
                                                             {lead.email}
                                                         </a>
                                                     </div>
@@ -1107,7 +1114,7 @@
                                         <select
                                             value={dealFilter}
                                             onChange={(e) => setDealFilter(e.target.value)}
-                                            className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-purple-500 focus:border-purple-500"
+                                            className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-green-500 focus:border-green-500"
                                         >
                                             <option>All Deals</option>
                                             <option>Closed(Won)</option>
@@ -1141,9 +1148,9 @@
                                                     <p className="text-2xl font-bold text-blue-800">{formatCurrency(deal.bookingAmount)}</p>
                                                 </div>
 
-                                                <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-4 rounded-lg">
-                                                    <p className="text-sm text-purple-600 font-medium">Commission (5%)</p>
-                                                    <p className="text-xl font-bold text-purple-800">{formatCurrency(deal.commission)}</p>
+                                                <div className="bg-gradient-to-r from-green-50 to-yellow-50 p-4 rounded-lg">
+                                                    <p className="text-sm text-green-600 font-medium">Commission (5%)</p>
+                                                    <p className="text-xl font-bold text-green-800">{formatCurrency(deal.commission)}</p>
                                                 </div>
 
                                                 <div className="bg-gradient-to-r from-pink-50 to-pink-100 p-4 rounded-lg">
@@ -1183,7 +1190,7 @@
                                         <select
                                             value={selectedMonth}
                                             onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-                                            className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-purple-500 focus:border-purple-500"
+                                            className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-green-500 focus:border-green-500"
                                         >
                                             {months.map((month, index) => (
                                                 <option key={index} value={index}>{month}</option>
@@ -1196,15 +1203,15 @@
                                 </div>
 
                                 {/* Header Card */}
-                                <div className="bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl shadow-lg p-8 text-white">
+                                <div className="bg-gradient-to-r from-green-500 to-yellow-500 rounded-2xl shadow-lg p-8 text-white">
                                     <div className="flex items-center space-x-4">
                                         <div className="p-4 bg-white bg-opacity-20 rounded-2xl">
                                             <Icons.Gift />
                                         </div>
                                         <div>
                                             <h2 className="text-3xl font-bold">{birthdayLeads.length} Birthdays</h2>
-                                            <p className="text-pink-100">Re-booking opportunities this month</p>
-                                            <p className="text-sm text-pink-200 mt-2">
+                                            <p className="text-green-100">Re-booking opportunities this month</p>
+                                            <p className="text-sm text-green-200 mt-2">
                                                 Reach out to these clients and offer them a special birthday package!
                                             </p>
                                         </div>
@@ -1222,7 +1229,7 @@
                                             return (
                                                 <div key={lead.refNumber} className="bg-white rounded-2xl shadow-lg p-6 card-hover">
                                                     <div className="flex items-center space-x-4 mb-4">
-                                                        <div className="p-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl text-white">
+                                                        <div className="p-3 bg-gradient-to-r from-green-500 to-yellow-500 rounded-xl text-white">
                                                             <Icons.Gift />
                                                         </div>
                                                         <div>
@@ -1234,7 +1241,7 @@
                                                     <div className="space-y-3">
                                                         <div className="flex items-center space-x-2 text-sm text-gray-600">
                                                             <Icons.Mail />
-                                                            <a href={`mailto:${lead.email}`} className="hover:text-purple-600 transition-colors">
+                                                            <a href={`mailto:${lead.email}`} className="hover:text-green-600 transition-colors">
                                                                 {lead.email}
                                                             </a>
                                                         </div>
@@ -1272,7 +1279,7 @@
                                 <div className="bg-white rounded-2xl shadow-lg p-6">
                                     <div className="flex items-center justify-between">
                                         <h2 className="text-2xl font-bold text-gray-800">Upcoming Events</h2>
-                                        <span className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-sm font-medium">
+                                        <span className="px-4 py-2 bg-gradient-to-r from-green-500 to-yellow-500 text-white rounded-full text-sm font-medium">
                                             Next 30 Days
                                         </span>
                                     </div>
@@ -1294,7 +1301,7 @@
                                                 <div key={lead.refNumber} className="bg-white rounded-2xl shadow-lg p-6 card-hover">
                                                     <div className="flex items-start space-x-6">
                                                         {/* Date Box */}
-                                                        <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl p-4 text-center min-w-[80px]">
+                                                        <div className="bg-gradient-to-r from-green-500 to-yellow-500 text-white rounded-xl p-4 text-center min-w-[80px]">
                                                             <div className="text-2xl font-bold">{day}</div>
                                                             <div className="text-xs uppercase">{month}</div>
                                                         </div>
@@ -1312,7 +1319,7 @@
                                                             </div>
 
                                                             <div className="flex items-center space-x-2 mb-4">
-                                                                <div className="p-2 bg-purple-100 rounded-lg text-purple-600">
+                                                                <div className="p-2 bg-green-100 rounded-lg text-green-600">
                                                                     {getEventIcon(lead.eventType)}
                                                                 </div>
                                                                 <span className="font-medium text-gray-800">{lead.eventType}</span>
@@ -1325,7 +1332,7 @@
                                                                 </div>
                                                                 <div className="flex items-center space-x-2 text-sm text-gray-600">
                                                                     <Icons.Mail />
-                                                                    <a href={`mailto:${lead.email}`} className="hover:text-purple-600 transition-colors truncate">
+                                                                    <a href={`mailto:${lead.email}`} className="hover:text-green-600 transition-colors truncate">
                                                                         {lead.email}
                                                                     </a>
                                                                 </div>
