@@ -286,7 +286,15 @@
                 }
                 const response = await fetch(`${API_CONFIG.appsScriptUrl}?action=getLeads`);
                 if (!response.ok) throw new Error('Failed to fetch leads');
-                return await response.json();
+                const data = await response.json();
+                
+                // Ensure data is an array
+                if (!Array.isArray(data)) {
+                    console.error('Expected array but got:', typeof data, data);
+                    return [];
+                }
+                
+                return data;
             } catch (error) {
                 console.error('Error fetching leads:', error);
                 throw error;
@@ -301,7 +309,15 @@
                 }
                 const response = await fetch(`${API_CONFIG.appsScriptUrl}?action=getDeals`);
                 if (!response.ok) throw new Error('Failed to fetch deals');
-                return await response.json();
+                const data = await response.json();
+                
+                // Ensure data is an array
+                if (!Array.isArray(data)) {
+                    console.error('Expected array but got:', typeof data, data);
+                    return [];
+                }
+                
+                return data;
             } catch (error) {
                 console.error('Error fetching deals:', error);
                 throw error;
@@ -356,42 +372,60 @@
                 }
             };
 
-            // Calculate statistics
+            // Calculate statistics with safety checks
             const stats = {
-                totalLeads: leads.length,
-                closedDeals: deals.filter(deal => deal.status === 'Closed(Won)').length,
-                pendingDeals: deals.filter(deal => deal.status === 'Pending').length,
-                lostDeals: deals.filter(deal => deal.status === 'Lost').length,
-                totalRevenue: deals.filter(deal => deal.status === 'Closed(Won)')
-                    .reduce((sum, deal) => sum + deal.bookingAmount, 0),
-                totalCommission: deals.filter(deal => deal.status === 'Closed(Won)')
-                    .reduce((sum, deal) => sum + deal.commission, 0),
-                conversionRate: deals.length > 0 ? 
-                    (deals.filter(deal => deal.status === 'Closed(Won)').length / deals.length * 100).toFixed(1) : 0
+                totalLeads: Array.isArray(leads) ? leads.length : 0,
+                closedDeals: Array.isArray(deals) ? deals.filter(deal => deal && deal.status === 'Closed(Won)').length : 0,
+                pendingDeals: Array.isArray(deals) ? deals.filter(deal => deal && deal.status === 'Pending').length : 0,
+                lostDeals: Array.isArray(deals) ? deals.filter(deal => deal && deal.status === 'Lost').length : 0,
+                totalRevenue: Array.isArray(deals) ? deals.filter(deal => deal && deal.status === 'Closed(Won)')
+                    .reduce((sum, deal) => sum + (parseFloat(deal.bookingAmount) || 0), 0) : 0,
+                totalCommission: Array.isArray(deals) ? deals.filter(deal => deal && deal.status === 'Closed(Won)')
+                    .reduce((sum, deal) => sum + (parseFloat(deal.commission) || 0), 0) : 0,
+                conversionRate: Array.isArray(deals) && deals.length > 0 ? 
+                    (deals.filter(deal => deal && deal.status === 'Closed(Won)').length / deals.length * 100).toFixed(1) : 0
             };
 
-            // Filter functions
-            const filteredLeads = leads.filter(lead => 
-                lead.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                lead.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                lead.refNumber.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+            // Filter functions with safety checks
+            const filteredLeads = Array.isArray(leads) ? leads.filter(lead => 
+                lead && (
+                    (lead.clientName && lead.clientName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                    (lead.email && lead.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                    (lead.refNumber && lead.refNumber.toLowerCase().includes(searchTerm.toLowerCase()))
+                )
+            ) : [];
 
             const filteredDeals = dealFilter === 'All Deals' 
-                ? deals 
-                : deals.filter(deal => deal.status === dealFilter);
+                ? (Array.isArray(deals) ? deals : []) 
+                : (Array.isArray(deals) ? deals.filter(deal => deal && deal.status === dealFilter) : []);
 
-            const birthdayLeads = leads.filter(lead => {
-                const birthDate = new Date(lead.dateOfBirth);
-                return birthDate.getMonth() === selectedMonth;
-            });
+            const birthdayLeads = Array.isArray(leads) ? leads.filter(lead => {
+                if (!lead || !lead.dateOfBirth) return false;
+                try {
+                    const birthDate = new Date(lead.dateOfBirth);
+                    return birthDate.getMonth() === selectedMonth;
+                } catch (e) {
+                    return false;
+                }
+            }) : [];
 
-            const upcomingEvents = leads.filter(lead => {
-                const eventDate = new Date(lead.eventDate);
-                const today = new Date();
-                const thirtyDaysFromNow = new Date(today.getTime() + (30 * 24 * 60 * 60 * 1000));
-                return eventDate >= today && eventDate <= thirtyDaysFromNow;
-            }).sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate));
+            const upcomingEvents = Array.isArray(leads) ? leads.filter(lead => {
+                if (!lead || !lead.eventDate) return false;
+                try {
+                    const eventDate = new Date(lead.eventDate);
+                    const today = new Date();
+                    const thirtyDaysFromNow = new Date(today.getTime() + (30 * 24 * 60 * 60 * 1000));
+                    return eventDate >= today && eventDate <= thirtyDaysFromNow;
+                } catch (e) {
+                    return false;
+                }
+            }).sort((a, b) => {
+                try {
+                    return new Date(a.eventDate) - new Date(b.eventDate);
+                } catch (e) {
+                    return 0;
+                }
+            }) : [];
 
             const getDaysUntilEvent = (eventDate) => {
                 const today = new Date();
@@ -641,20 +675,24 @@
                                 {/* Recent Activity */}
                                 <div className="bg-white rounded-2xl shadow-lg p-6">
                                     <h3 className="text-lg font-semibold text-gray-800 mb-6">Recent Activity</h3>
-                                    {leads.slice(0, 5).map(lead => (
+                                    {Array.isArray(leads) && leads.length > 0 ? leads.slice(0, 5).map(lead => (
                                         <div key={lead.refNumber} className="flex items-center space-x-4 py-4 border-b border-gray-100 last:border-b-0">
                                             <div className="p-2 bg-gray-100 rounded-lg">
                                                 {getEventIcon(lead.eventType)}
                                             </div>
                                             <div className="flex-1">
-                                                <p className="font-medium text-gray-800">{lead.clientName}</p>
-                                                <p className="text-sm text-gray-600">{lead.eventType} • {formatDate(lead.eventDate)}</p>
+                                                <p className="font-medium text-gray-800">{lead.clientName || 'Unknown Client'}</p>
+                                                <p className="text-sm text-gray-600">{lead.eventType || 'Unknown Event'} • {lead.eventDate ? formatDate(lead.eventDate) : 'No Date'}</p>
                                             </div>
                                             <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(lead.status)}`}>
-                                                {lead.status}
+                                                {lead.status || 'Unknown'}
                                             </span>
                                         </div>
-                                    ))}
+                                    )) : (
+                                        <div className="text-center py-8">
+                                            <p className="text-gray-500">No recent activity available</p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         )}
