@@ -286,12 +286,33 @@
                 }
                 const response = await fetch(`${API_CONFIG.appsScriptUrl}?action=getLeads`);
                 if (!response.ok) throw new Error('Failed to fetch leads');
-                const data = await response.json();
+                const responseData = await response.json();
                 
-                // Ensure data is an array
-                if (!Array.isArray(data)) {
-                    console.error('Expected array but got:', typeof data, data);
-                    return [];
+                // Handle different response formats from Google Apps Script
+                let data;
+                if (Array.isArray(responseData)) {
+                    // Direct array response
+                    data = responseData;
+                } else if (responseData && typeof responseData === 'object') {
+                    // Object wrapper - try to extract the data
+                    data = responseData.data || responseData.leads || responseData.result || [];
+                    if (!Array.isArray(data)) {
+                        console.warn('Could not extract array from response:', responseData);
+                        // Try to get the first property that is an array
+                        const keys = Object.keys(responseData);
+                        for (const key of keys) {
+                            if (Array.isArray(responseData[key])) {
+                                data = responseData[key];
+                                break;
+                            }
+                        }
+                        if (!Array.isArray(data)) {
+                            data = [];
+                        }
+                    }
+                } else {
+                    console.error('Unexpected response format:', typeof responseData, responseData);
+                    data = [];
                 }
                 
                 return data;
@@ -309,12 +330,33 @@
                 }
                 const response = await fetch(`${API_CONFIG.appsScriptUrl}?action=getDeals`);
                 if (!response.ok) throw new Error('Failed to fetch deals');
-                const data = await response.json();
+                const responseData = await response.json();
                 
-                // Ensure data is an array
-                if (!Array.isArray(data)) {
-                    console.error('Expected array but got:', typeof data, data);
-                    return [];
+                // Handle different response formats from Google Apps Script
+                let data;
+                if (Array.isArray(responseData)) {
+                    // Direct array response
+                    data = responseData;
+                } else if (responseData && typeof responseData === 'object') {
+                    // Object wrapper - try to extract the data
+                    data = responseData.data || responseData.deals || responseData.result || [];
+                    if (!Array.isArray(data)) {
+                        console.warn('Could not extract array from response:', responseData);
+                        // Try to get the first property that is an array
+                        const keys = Object.keys(responseData);
+                        for (const key of keys) {
+                            if (Array.isArray(responseData[key])) {
+                                data = responseData[key];
+                                break;
+                            }
+                        }
+                        if (!Array.isArray(data)) {
+                            data = [];
+                        }
+                    }
+                } else {
+                    console.error('Unexpected response format:', typeof responseData, responseData);
+                    data = [];
                 }
                 
                 return data;
